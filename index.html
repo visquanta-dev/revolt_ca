@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Revolt by Coverall – Powered by VisQuanta</title>
+
+    <!-- Open Graph / iMessage / SMS link preview -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Revolt by Coverall – Powered by VisQuanta">
+    <meta property="og:description" content="Database reactivation for Canadian dealerships. Re-engage past buyers over text. Trade-ins and extended warranty leads, automatically.">
+    <meta property="og:image" content="assets/og-preview.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Revolt by Coverall – Powered by VisQuanta">
+    <meta name="twitter:description" content="Database reactivation for Canadian dealerships. Re-engage past buyers over text.">
+    <meta name="twitter:image" content="assets/og-preview.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* BASE RESET & THEME */
+        :root {
+            --orange: #ff6a00;
+            --orange-glow: rgba(255, 106, 0, 0.4);
+            --bg-base: #050505;
+            --text-main: #f0f0f0;
+            --text-muted: rgba(255, 255, 255, 0.6);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg-base);
+            color: var(--text-main);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* SCROLL SNAP & SECTION ARCHITECTURE */
+        .landing-container { width: 100%; }
+
+        .section-panel {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 80px 40px;
+            border-bottom: 1px solid rgba(255, 106, 0, 0.15);
+        }
+
+        .grid-bg {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .glow-orb {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(255,106,0,0.1) 0%, transparent 60%);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .content-split {
+            position: relative;
+            z-index: 10;
+            max-width: 1400px;
+            width: 100%;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        /* TEXT COLUMN (LEFT) */
+        .text-column {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .hero-title {
+            font-family: 'Space Mono', monospace;
+            font-size: 4rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            line-height: 1.1;
+            color: #fff;
+            margin-bottom: 5px;
+        }
+
+        .hero-subtitle {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.4rem;
+            color: var(--orange);
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .hero-description {
+            font-size: 1.15rem;
+            line-height: 1.7;
+            color: rgba(255,255,255,0.8);
+            font-weight: 300;
+            max-width: 90%;
+            margin-bottom: 20px;
+        }
+
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 10px;
+        }
+
+        .analytics-card {
+            background: rgba(255, 106, 0, 0.03);
+            border-top: 2px solid rgba(255, 106, 0, 0.4);
+            padding: 25px;
+            border-radius: 6px;
+        }
+
+        .analytics-title {
+            font-family: 'Space Mono', monospace;
+            color: var(--orange);
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            display: block;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+        }
+
+        .analytics-body {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: rgba(255,255,255,0.75);
+        }
+
+        /* PHONE COLUMN (RIGHT) */
+        .phone-column {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1000px;
+        }
+
+        /* Left-column phones mirror the right-side hover animation */
+        .left-phone-col .hermes-iphone {
+            transform: rotateY(-10deg) rotateX(2deg);
+        }
+        .left-phone-col .hermes-iphone:hover {
+            transform: rotateY(2deg) rotateX(0deg);
+        }
+
+        /* Smooth anchor scroll */
+        html { scroll-behavior: smooth; }
+
+        .hermes-iphone {
+            width: 380px;
+            height: 780px;
+            background: #0a0a0a;
+            border-radius: 48px;
+            border: 12px solid #1a1a1a;
+            box-shadow:
+                0 0 0 2px rgba(255,106,0,0.3),
+                inset 0 0 0 2px rgba(255,255,255,0.05),
+                0 25px 60px rgba(0,0,0,0.9);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+            transform: rotateY(-10deg) rotateX(2deg);
+            transition: transform 0.4s ease;
+        }
+
+        .hermes-iphone:hover {
+            transform: rotateY(-2deg) rotateX(0deg);
+        }
+
+        .hermes-status-bar {
+            background: #0f0f0f;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px 5px;
+            color: #fff;
+            font-weight: 600;
+            font-size: 0.9rem;
+            z-index: 20;
+        }
+
+        .hermes-header {
+            display: flex;
+            align-items: center;
+            padding: 15px 25px 15px;
+            background: rgba(15,15,15,0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,106,0,0.15);
+            z-index: 20;
+        }
+
+        .hermes-back { color: var(--orange); font-size: 1.8rem; margin-right: 15px; font-weight: bold; cursor: pointer; }
+
+        .hermes-avatar {
+            width: 45px; height: 45px; border-radius: 50%;
+            background: #1a1a1a; color: var(--orange);
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Space Mono', monospace; font-weight: 700; font-size: 1.1rem;
+            margin-right: 15px; border: 1px solid rgba(255,106,0,0.3);
+        }
+
+        .hermes-name-block { display: flex; flex-direction: column; }
+        .hermes-name { font-size: 1.1rem; color: #fff; font-weight: 500; }
+        .hermes-sub { font-size: 0.75rem; color: rgba(255,255,255,0.4); margin-top: 2px; }
+
+        .hermes-icons { margin-left: auto; color: var(--orange); font-size: 1.2rem; letter-spacing: 5px; }
+
+        /* SCROLLABLE CHAT ENGINE */
+        .hermes-screen {
+            flex: 1;
+            background: #000;
+            padding: 20px 20px 40px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .hermes-screen::-webkit-scrollbar { width: 4px; }
+        .hermes-screen::-webkit-scrollbar-track { background: transparent; }
+        .hermes-screen::-webkit-scrollbar-thumb { background: rgba(255,106,0,0.3); border-radius: 4px; }
+
+        .date-chip {
+            align-self: center;
+            background: rgba(255,106,0,0.05);
+            color: var(--orange);
+            border: 1px solid rgba(255,106,0,0.15);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            padding: 6px 14px;
+            border-radius: 20px;
+            margin: 25px 0;
+            letter-spacing: 1px;
+        }
+
+        .hermes-bubble {
+            font-size: 0.95rem;
+            padding: 14px 18px;
+            max-width: 85%;
+            line-height: 1.5;
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .hermes-bubble .meta {
+            position: absolute;
+            top: -20px;
+            font-size: 0.7rem;
+            color: rgba(255,255,255,0.3);
+            letter-spacing: 0.5px;
+        }
+
+        .hermes-bubble.agent {
+            background: var(--orange);
+            color: #fff;
+            align-self: flex-end;
+            border-radius: 18px;
+            border-bottom-right-radius: 2px;
+        }
+        .hermes-bubble.agent .meta { right: 5px; }
+
+        .hermes-bubble.customer {
+            background: #242424;
+            color: #e0e0e0;
+            align-self: flex-start;
+            border-radius: 18px;
+            border-bottom-left-radius: 2px;
+            border: 1px solid #333;
+        }
+        .hermes-bubble.customer .meta { left: 5px; }
+
+        .hermes-input-bar {
+            border-top: 1px solid rgba(255,106,0,0.15);
+            background: #0f0f0f;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+        }
+        .hermes-input-bar .plus {
+            width: 32px; height: 32px;
+            border-radius: 50%; border: 1px solid rgba(255,106,0,0.3);
+            color: var(--orange); display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem; margin-right: 15px;
+        }
+        .hermes-input-bar .text {
+            color: rgba(255,255,255,0.3); font-size: 0.9rem;
+            background: #1a1a1a; padding: 8px 15px; border-radius: 20px; flex: 1;
+        }
+
+        .redacted-light {
+            background: rgba(255,255,255,0.1);
+            color: transparent;
+            border-radius: 2px;
+            padding: 0 6px;
+            user-select: none;
+        }
+
+        /* ROUTE DIVIDER */
+        .route-divider {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 14px 28px;
+            background: rgba(255,106,0,0.05);
+            border: 1px solid rgba(255,106,0,0.25);
+            border-radius: 40px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--orange);
+            letter-spacing: 2px;
+            width: fit-content;
+        }
+
+        .route-divider::before {
+            content: '';
+            width: 8px; height: 8px;
+            background: var(--orange);
+            border-radius: 50%;
+        }
+
+        @media (max-width: 1024px) {
+            .content-split {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 50px;
+            }
+            .text-column { align-items: center; }
+            .hero-description { max-width: 100%; }
+            .analytics-grid { grid-template-columns: 1fr; width: 100%; max-width: 600px; text-align: left; }
+            .hermes-iphone { transform: none !important; }
+        }
+
+        /* SCROLL INDICATOR */
+        .phone-column { position: relative; gap: 15px; }
+        .scroll-indicator {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            opacity: 0.5;
+            transition: opacity 0.3s;
+            z-index: 30;
+        }
+        .hermes-iphone:hover ~ .scroll-indicator, .scroll-indicator:hover { opacity: 1; }
+        .indicator-right { order: 2; margin-left: 5px; }
+        .indicator-left { order: -1; margin-right: 5px; }
+        .hermes-iphone { order: 1; }
+        .scroll-line {
+            width: 1px;
+            height: 50px;
+            background: linear-gradient(to bottom, transparent, var(--orange), transparent);
+        }
+        .scroll-text {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: var(--orange);
+            letter-spacing: 2px;
+            writing-mode: vertical-rl;
+            text-transform: uppercase;
+        }
+        .scroll-arrow {
+            font-size: 1.4rem;
+            color: var(--orange);
+            line-height: 1;
+            font-weight: bold;
+        }
+
+        .hermes-mobile-scroll-hint { display: none; }
+        @keyframes hermesPulse {
+            0%, 100% { opacity: 0.6; box-shadow: 0 0 0 1.5px rgba(255, 255, 255, 0.4); }
+            50% { opacity: 1; box-shadow: 0 0 0 1.5px rgba(255, 255, 255, 0.9); text-shadow: 0 0 12px rgba(255,106,0,0.6); }
+        }
+
+        /* iOS MOBILE */
+        @media (max-width: 900px) {
+            html, body { overflow-x: hidden !important; position: relative !important; max-width: 100vw !important; }
+            .landing-container { overflow-x: hidden !important; max-width: 100vw !important; width: 100% !important; }
+            .glow-orb { width: 100vw !important; max-width: 100% !important; height: 100vw !important; }
+
+            .section-panel {
+                padding: 60px 15px !important;
+                margin: 20px 15px 40px !important;
+                min-height: auto !important;
+                border: 1px solid rgba(255, 106, 0, 0.3) !important;
+                border-radius: 20px !important;
+                background: rgba(10, 10, 10, 0.4) !important;
+                position: relative;
+            }
+            .section-panel::after { display: none !important; }
+
+            .content-split { grid-template-columns: 1fr !important; padding: 0 10px !important; text-align: center !important; }
+            h1, .hero-title, h2, h3 { font-size: clamp(1.7rem, 9vw, 2.8rem) !important; line-height: 1.1 !important; word-break: break-word !important; overflow-wrap: break-word !important; text-align: center !important; }
+            .hero-subtitle { font-size: 1rem !important; word-break: break-word !important; text-align: center !important; }
+            .hero-description { font-size: 1.05rem !important; text-align: center !important; max-width: 100% !important; }
+            .text-column { display: flex !important; flex-direction: column !important; align-items: center !important; text-align: center !important; }
+            .analytics-grid { grid-template-columns: 1fr !important; width: 100% !important; text-align: left !important; }
+
+            .hermes-iphone { width: 100% !important; max-width: 380px !important; height: 740px !important; transform: none !important; margin: 0 auto !important; }
+            .hermes-screen { padding-bottom: 120px !important; }
+
+            .phone-column { display: flex !important; flex-direction: column !important; gap: 25px !important; }
+            .scroll-indicator { display: none !important; }
+
+            .hermes-mobile-scroll-hint {
+                display: flex !important;
+                align-items: center; justify-content: center;
+                position: absolute; bottom: 70px; left: 50%; transform: translateX(-50%) !important;
+                background: rgba(15, 15, 15, 0.95);
+                backdrop-filter: blur(10px);
+                border: 1.5px solid var(--orange) !important;
+                box-shadow: 0 0 0 1.5px rgba(255, 255, 255, 0.7) !important;
+                border-radius: 20px;
+                padding: 8px 20px; color: var(--orange) !important; z-index: 100;
+                font-family: 'Space Mono', monospace; font-size: 0.85rem; font-weight: 800; letter-spacing: 1px;
+                pointer-events: auto !important; cursor: pointer !important;
+                text-shadow:
+                    -0.5px -0.5px 0 rgba(255,255,255,0.7),
+                     0.5px -0.5px 0 rgba(255,255,255,0.7),
+                    -0.5px  0.5px 0 rgba(255,255,255,0.7),
+                     0.5px  0.5px 0 rgba(255,255,255,0.7) !important;
+                animation: hermesPulse 2s infinite ease-in-out;
+            }
+            .route-divider { margin: 0 auto; }
+            /* Chat bubble alignment - override center cascade */
+            .hermes-screen { align-items: stretch !important; }
+            .hermes-bubble { text-align: left !important; }
+            .hermes-bubble.agent { align-self: flex-end !important; margin-left: auto; }
+            .hermes-bubble.customer { align-self: flex-start !important; }
+            /* Closing section mobile */
+            #closing-wrap { width: 100% !important; box-sizing: border-box !important; padding: 0 15px !important; max-width: 100% !important; }
+            #closing-grid { grid-template-columns: 1fr !important; max-width: 100% !important; width: 100% !important; }
+            #closing-ctas { flex-direction: column !important; align-items: stretch !important; width: 100% !important; }
+            #closing-ctas a { width: 100% !important; justify-content: center !important; box-sizing: border-box !important; padding: 18px 20px !important; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="landing-container">
+
+    <!-- ==============================
+         COVER
+    ============================== -->
+    <section class="section-panel" style="justify-content: center; text-align: center;">
+        <div class="grid-bg"></div>
+        <div class="glow-orb" style="width: 800px; height: 800px;"></div>
+
+        <div style="z-index: 10; max-width: 900px; display: flex; flex-direction: column; align-items: center;">
+
+            <!-- LOGO LOCKUP: COVERALL × VISQUANTA -->
+            <div style="display: flex; align-items: center; gap: 28px; margin-bottom: 44px; flex-wrap: wrap; justify-content: center;">
+                <img src="assets/CAP_logo_lt.svg" alt="Coverall" style="height: 78px; opacity: 0.95;">
+                <span style="font-family: 'Space Mono', monospace; font-size: 2rem; color: rgba(255,106,0,0.5); font-weight: 300; line-height: 1;">x</span>
+                <img src="assets/visquanta-logo.png" alt="VisQuanta" style="height: 57px; opacity: 0.95;">
+            </div>
+
+            <h1 style="font-size: 6rem; font-weight: 800; line-height: 1.0; margin-bottom: 8px; text-transform: uppercase; letter-spacing: -2px;">
+                REVOLT
+            </h1>
+
+            <span style="font-family: 'Space Mono', monospace; color: var(--orange); letter-spacing: 5px; font-size: 0.95rem; margin-bottom: 14px; display: block; text-transform: uppercase;">
+                Technologies
+            </span>
+
+            <span style="font-family: 'Space Mono', monospace; color: rgba(255,255,255,0.55); letter-spacing: 3px; font-size: 0.85rem; margin-bottom: 10px; display: block; text-transform: uppercase;">
+                A Database Reactivation Campaign
+            </span>
+
+            <span style="font-family: 'Inter', sans-serif; font-size: 1rem; color: rgba(255,255,255,0.35); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 36px; display: block;">Powered by VisQuanta</span>
+
+            <p style="font-size: 1.3rem; line-height: 1.8; color: rgba(255,255,255,0.7); margin-bottom: 40px; font-weight: 300;">
+                Your dealer database is already full of warm leads. Revolt Technologies uses conversational AI agent to re-engage past buyers over text, qualifying them for a trade-in or an extended warranty without a single cold call.
+            </p>
+
+            <div style="display: flex; gap: 20px; flex-wrap: wrap; justify-content: center;">
+                <a href="#section-trade-in" style="background: rgba(255,106,0,0.1); border: 1px solid rgba(255,106,0,0.3); padding: 10px 20px; border-radius: 4px; font-family: 'Space Mono', monospace; font-size: 0.9rem; color: var(--orange); text-decoration: none; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,106,0,0.2)';" onmouseout="this.style.background='rgba(255,106,0,0.1)';">TRADE-IN ROUTE</a>
+                <a href="#section-warranty" style="background: rgba(255,106,0,0.1); border: 1px solid rgba(255,106,0,0.3); padding: 10px 20px; border-radius: 4px; font-family: 'Space Mono', monospace; font-size: 0.9rem; color: var(--orange); text-decoration: none; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,106,0,0.2)';" onmouseout="this.style.background='rgba(255,106,0,0.1)';">WARRANTY ROUTE</a>
+                <a href="#section-dbr" style="background: rgba(255,106,0,0.1); border: 1px solid rgba(255,106,0,0.3); padding: 10px 20px; border-radius: 4px; font-family: 'Space Mono', monospace; font-size: 0.9rem; color: var(--orange); text-decoration: none; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,106,0,0.2)';" onmouseout="this.style.background='rgba(255,106,0,0.1)';">DATABASE REACTIVATION</a>
+            </div>
+
+            <span style="display: block; margin-top: 60px; font-family: 'Space Mono', monospace; color: rgba(255,255,255,0.3); font-size: 0.9rem;">SCROLL TO INITIATE SEQUENCE ↓</span>
+        </div>
+    </section>
+
+    <!-- ==============================
+         TRADE-IN ROUTE — SECTION 1
+         Initial Outreach & Qualification (Marc)
+    ============================== -->
+    <section class="section-panel" id="section-trade-in">
+        <div class="grid-bg"></div>
+        <div class="glow-orb" style="left: 30%;"></div>
+
+        <div class="content-split">
+            <div class="text-column">
+                <div class="route-divider">TRADE-IN ROUTE</div>
+                <div>
+                    <h2 class="hero-title">TRADE-IN<br>OUTREACH</h2>
+                    <span class="hero-subtitle">// OUTREACH & INTENT DETECTION</span>
+                </div>
+
+                <p class="hero-description">We reach out to past buyers on behalf of the dealership, check in naturally, and let their response tell us which road they're on. No pressure. Just the right question at the right time.</p>
+
+                <div class="analytics-grid">
+                    <div class="analytics-card">
+                        <span class="analytics-title">// HOW IT WORKS</span>
+                        <p class="analytics-body">The AI agent introduces itself as an assistant from the dealership, not a salesperson. A simple check-in opens the door and customers who are ready will say so on their own.</p>
+                    </div>
+                    <div class="analytics-card">
+                        <span class="analytics-title">// WHAT WE'RE SEEING</span>
+                        <p class="analytics-body">Marc hadn't been back in two years. One text later he volunteered that he was already thinking about trading in. The AI agent gathered km, preference, and locked in a specific time before the conversation ended.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="phone-column left-phone-col">
+                <div class="scroll-indicator indicator-right">
+                    <span class="scroll-arrow">↑</span>
+                    <span class="scroll-line"></span>
+                    <span class="scroll-text">SCROLL CHAT</span>
+                    <span class="scroll-line"></span>
+                    <span class="scroll-arrow">↓</span>
+                </div>
+                <div class="hermes-iphone" style="transform: rotateY(-10deg) rotateX(2deg);" onmouseover="this.style.transform='rotateY(2deg) rotateX(0deg)'" onmouseout="this.style.transform='rotateY(-10deg) rotateX(2deg)'">
+                    <div class="hermes-status-bar"><span>1:17</span><span>📶🔋</span></div>
+                    <div class="hermes-header">
+                        <span class="hermes-back">&lt;</span>
+                        <div class="hermes-avatar">M</div>
+                        <div class="hermes-name-block">
+                            <span class="hermes-name">Marc T.</span>
+                            <span class="hermes-sub">Tap to view info</span>
+                        </div>
+                        <div class="hermes-icons">⋮</div>
+                    </div>
+                    <div class="hermes-screen">
+                        <div class="date-chip">Mar 18, 2026</div>
+                        <div class="hermes-bubble agent"><span class="meta">10:14 AM</span>Hey is this Marc? This is Lexi from <span style="filter:blur(3px);opacity:0.7;user-select:none;">Westview Toyota</span>. You picked up a RAV4 from us back in 2021. Reply STOP to opt out</div>
+                        <div class="hermes-bubble customer"><span class="meta">10:22 AM</span>yeah thats me</div>
+                        <div class="hermes-bubble agent"><span class="meta">10:23 AM</span>Hey Marc! Just checking in to see how its been running. We reach out to past customers to see if theyre happy where theyre at or if there's something we can help with</div>
+                        <div class="hermes-bubble customer"><span class="meta">10:31 AM</span>honestly its good but ive been thinking about trading it in</div>
+                        <div class="hermes-bubble agent"><span class="meta">10:32 AM</span>Oh nice, good timing actually. You thinking something bigger or just something newer?</div>
+                        <div class="hermes-bubble customer"><span class="meta">10:35 AM</span>bigger, need more space</div>
+                        <div class="hermes-bubble agent"><span class="meta">10:36 AM</span>Makes sense. What's the km on the RAV4 right now?</div>
+                        <div class="hermes-bubble customer"><span class="meta">10:44 AM</span>around 67,000 km</div>
+                        <div class="hermes-bubble agent"><span class="meta">10:45 AM</span>Got it. 67k on a 2021 is a solid trade position right now. Let me get one of our guys to run your numbers. Does Thursday at 2:30 work for a quick call?</div>
+                        <div class="hermes-bubble customer"><span class="meta">10:52 AM</span>yeah 2:30 Thursday works</div>
+                        <div class="hermes-bubble agent"><span class="meta">10:53 AM</span>Perfect. I'll have them call you at 2:30. They'll pull a trade value and show you what we've got coming in. Talk soon Marc</div>
+                    </div>
+                    <div class="hermes-mobile-scroll-hint" onclick="this.parentNode.querySelector('.hermes-screen').scrollBy({top: 250, behavior: 'smooth'});">
+                        <span class="scroll-arrow" style="font-size:12px; margin-right:6px;">↑</span>
+                        <span>CLICK TO SCROLL CHAT</span>
+                        <span class="scroll-arrow" style="font-size:12px; margin-left:6px;">↓</span>
+                    </div>
+                    <div class="hermes-input-bar"><div class="plus">+</div><div class="text">iMessage</div></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==============================
+         TRADE-IN ROUTE — SECTION 2
+         Deep Qualification & Appointment Set (Diane)
+    ============================== -->
+    <section class="section-panel">
+        <div class="grid-bg"></div>
+        <div class="glow-orb" style="left: 70%;"></div>
+
+        <div class="content-split" style="direction: rtl;">
+            <div class="text-column" style="direction: ltr;">
+                <div class="route-divider">TRADE-IN ROUTE</div>
+                <div>
+                    <h2 class="hero-title">QUALIFY &<br>BOOK</h2>
+                    <span class="hero-subtitle">// PREFERENCE CAPTURE & APPOINTMENT SET</span>
+                </div>
+
+                <p class="hero-description">Once a customer says they're interested, Revolt Technologies gathers everything the sales team needs before they pick up the phone. Vehicle preferences, must-haves, and payment approach, all captured in the conversation.</p>
+
+                <div class="analytics-grid">
+                    <div class="analytics-card">
+                        <span class="analytics-title">// HOW IT WORKS</span>
+                        <p class="analytics-body">The AI runs a structured but conversational qualification: size, AWD, features, financing, without ever feeling like a form. Diane did most of the work herself.</p>
+                    </div>
+                    <div class="analytics-card">
+                        <span class="analytics-title">// WHAT WE'RE SEEING</span>
+                        <p class="analytics-body">By the time the sales advisor calls Diane, they know she needs AWD for Canadian winters, wants heated seats and remote start, and is focused on a monthly payment. Zero guessing. One call to close.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="phone-column" style="direction: ltr;">
+                <div class="scroll-indicator indicator-left">
+                    <span class="scroll-arrow">↑</span>
+                    <span class="scroll-line"></span>
+                    <span class="scroll-text">SCROLL CHAT</span>
+                    <span class="scroll-line"></span>
+                    <span class="scroll-arrow">↓</span>
+                </div>
+                <div class="hermes-iphone" style="transform: rotateY(10deg) rotateX(2deg);">
+                    <div class="hermes-status-bar"><span>2:04</span><span>📶🔋</span></div>
+                    <div class="hermes-header">
+                        <span class="hermes-back">&lt;</span>
+                        <div class="hermes-avatar">D</div>
+                        <div class="hermes-name-block">
+                            <span class="hermes-name">Diane R.</span>
+                            <span class="hermes-sub">Tap to view info</span>
+                        </div>
+                        <div class="hermes-icons">⋮</div>
+                    </div>
+                    <div class="hermes-screen">
+                        <div class="date-chip">Mar 20, 2026</div>
+                        <div class="hermes-bubble agent"><span class="meta">11:03 AM</span>Hey Diane, Lexi again from <span style="filter:blur(3px);opacity:0.7;user-select:none;">Westview</span>. Following up from last week, did you get a chance to think about the trade?</div>
+                        <div class="hermes-bubble customer"><span class="meta">11:19 AM</span>yes actually ready to move on it, need more space for the fam</div>
+                        <div class="hermes-bubble agent"><span class="meta">11:20 AM</span>Love that. You thinking mid-size or going bigger?</div>
+                        <div class="hermes-bubble customer"><span class="meta">11:24 AM</span>mid-size, nothing too big</div>
+                        <div class="hermes-bubble agent"><span class="meta">11:25 AM</span>Gotcha. AWD a must? especially with our winters lol</div>
+                        <div class="hermes-bubble customer"><span class="meta">11:26 AM</span>100% non-negotiable lol</div>
+                        <div class="hermes-bubble agent"><span class="meta">11:27 AM</span>Ha fair. Financing or buying outright?</div>
+                        <div class="hermes-bubble customer"><span class="meta">11:30 AM</span>financing is fine, monthly payment is what matters for us</div>
+                        <div class="hermes-bubble agent"><span class="meta">11:31 AM</span>Perfect. Any must haves, heated seats, remote start, third row?</div>
+                        <div class="hermes-bubble customer"><span class="meta">11:33 AM</span>heated seats and remote start for sure. third row would be a bonus</div>
+                        <div class="hermes-bubble agent"><span class="meta">11:34 AM</span>Got it all down. Does Thursday at 10am work for a call? They'll have your trade number and some options pulled for you</div>
+                        <div class="hermes-bubble customer"><span class="meta">11:36 AM</span>yes that works!</div>
+                        <div class="hermes-bubble agent"><span class="meta">11:37 AM</span>Perfect, I'll have them call you at 10. Talk soon Diane</div>
+                    </div>
+                    <div class="hermes-mobile-scroll-hint" onclick="this.parentNode.querySelector('.hermes-screen').scrollBy({top: 250, behavior: 'smooth'});">
+                        <span class="scroll-arrow" style="font-size:12px; margin-right:6px;">↑</span>
+                        <span>CLICK TO SCROLL CHAT</span>
+                        <span class="scroll-arrow" style="font-size:12px; margin-left:6px;">↓</span>
+                    </div>
+                    <div class="hermes-input-bar"><div class="plus">+</div><div class="text">iMessage</div></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==============================
+         WARRANTY ROUTE — SECTION 3
+         The Organic Pivot (Kevin)
+    ============================== -->
+    <section class="section-panel" id="section-warranty">
+        <div class="grid-bg"></div>
+        <div class="glow-orb" style="left: 30%;"></div>
+
+        <div class="content-split">
+            <div class="text-column">
+                <div class="route-divider">WARRANTY ROUTE</div>
+                <div>
+                    <h2 class="hero-title">THE<br>PIVOT</h2>
+                    <span class="hero-subtitle">// TRADE-IN TO EXTENDED WARRANTY</span>
+                </div>
+
+                <p class="hero-description">Not every customer is ready to trade-in. But the right follow-up question opens a completely different door. The AI agent pivots naturally and qualifies a new opportunity in the same conversation.</p>
+
+                <div class="analytics-grid">
+                    <div class="analytics-card">
+                        <span class="analytics-title">// HOW IT WORKS</span>
+                        <p class="analytics-body">The AI agent reaches out on a trade-in campaign. When the customer declines, the agent asks if there is anything else the dealership can help with. Kevin brought up a second vehicle with no coverage entirely on his own.</p>
+                    </div>
+                    <div class="analytics-card">
+                        <span class="analytics-title">// WHAT WE'RE SEEING</span>
+                        <p class="analytics-body">The dealership had extended warranty knowledge in their system. The AI agent recognized Kevin's need, confirmed the program covered his vehicle, and booked a specialist call without breaking the flow.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="phone-column left-phone-col">
+                <div class="scroll-indicator indicator-right">
+                    <span class="scroll-arrow">↑</span>
+                    <span class="scroll-line"></span>
+                    <span class="scroll-text">SCROLL CHAT</span>
+                    <span class="scroll-line"></span>
+                    <span class="scroll-arrow">↓</span>
+                </div>
+                <div class="hermes-iphone" style="transform: rotateY(-10deg) rotateX(2deg);" onmouseover="this.style.transform='rotateY(2deg) rotateX(0deg)'" onmouseout="this.style.transform='rotateY(-10deg) rotateX(2deg)'">
+                    <div class="hermes-status-bar"><span>9:51</span><span>📶🔋</span></div>
+                    <div class="hermes-header">
+                        <span class="hermes-back">&lt;</span>
+                        <div class="hermes-avatar">K</div>
+                        <div class="hermes-name-block">
+                            <span class="hermes-name">Kevin D.</span>
+                            <span class="hermes-sub">Tap to view info</span>
+                        </div>
+                        <div class="hermes-icons">⋮</div>
+                    </div>
+                    <div class="hermes-screen">
+                        <div class="date-chip">Mar 24, 2026</div>
+                        <div class="hermes-bubble agent"><span class="meta">09:08 AM</span>Hey is this Kevin? This is Jordan from <span style="filter:blur(3px);opacity:0.7;user-select:none;">Northside Chev</span>. You bought a Corolla from us a while back. Reply STOP to opt out</div>
+                        <div class="hermes-bubble customer"><span class="meta">09:14 AM</span>ya thats me</div>
+                        <div class="hermes-bubble agent"><span class="meta">09:15 AM</span>Hey Kevin! Wanted to reach out and see if you had any interest in trading in the Corolla. We've been seeing really strong trade values lately</div>
+                        <div class="hermes-bubble customer"><span class="meta">09:22 AM</span>nah Im actually really happy with that car</div>
+                        <div class="hermes-bubble agent"><span class="meta">09:23 AM</span>No worries at all! Is there anything else vehicle wise we can ever help you out with?</div>
+                        <div class="hermes-bubble customer"><span class="meta">09:31 AM</span>actually yeah now that you mention it. I have a 2018 CX-5 that completely ran out of warranty and I've been looking into getting coverage on it</div>
+                        <div class="hermes-bubble agent"><span class="meta">09:32 AM</span>Oh yes absolutely, that's actually something we can help with. We have an extended warranty program that covers all makes and models including vehicles already outside of factory coverage. Do you know roughly what the km is on it?</div>
+                        <div class="hermes-bubble customer"><span class="meta">09:41 AM</span>probably around 94,000 km</div>
+                        <div class="hermes-bubble agent"><span class="meta">09:42 AM</span>Got it. Let me get someone from our team to reach out and go through the coverage options for your CX-5. Does Thursday at 11:30 work for a call?</div>
+                        <div class="hermes-bubble customer"><span class="meta">09:50 AM</span>yeah 11:30 Thursday works</div>
+                        <div class="hermes-bubble agent"><span class="meta">09:51 AM</span>Perfect. I'll have them call you at 11:30. They'll walk through exactly what's available for the Mazda</div>
+                    </div>
+                    <div class="hermes-mobile-scroll-hint" onclick="this.parentNode.querySelector('.hermes-screen').scrollBy({top: 250, behavior: 'smooth'});">
+                        <span class="scroll-arrow" style="font-size:12px; margin-right:6px;">↑</span>
+                        <span>CLICK TO SCROLL CHAT</span>
+                        <span class="scroll-arrow" style="font-size:12px; margin-left:6px;">↓</span>
+                    </div>
+                    <div class="hermes-input-bar"><div class="plus">+</div><div class="text">iMessage</div></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==============================
+         WARRANTY ROUTE — SECTION 4
+         Plan Details & Handoff (Kevin continued)
+    ============================== -->
+    <section class="section-panel">
+        <div class="grid-bg"></div>
+        <div class="glow-orb" style="left: 70%;"></div>
+
+        <div class="content-split" style="direction: rtl;">
+            <div class="text-column" style="direction: ltr;">
+                <div class="route-divider">WARRANTY ROUTE</div>
+                <div>
+                    <h2 class="hero-title">PLAN MATCH<br>&amp; HANDOFF</h2>
+                    <span class="hero-subtitle">// PLAN INFO &amp; ADVISOR ROUTING</span>
+                </div>
+
+                <p class="hero-description">The AI assistant gives the customer enough context to feel informed without promising specifics it can't confirm. Then it routes them to a specialist at a set time with everything already captured.</p>
+
+                <div class="analytics-grid">
+                    <div class="analytics-card">
+                        <span class="analytics-title">// HOW IT WORKS</span>
+                        <p class="analytics-body">The AI assistant confirms coverage is available, shares general plan information from the dealership's knowledge base, and locks the callback. No pricing is quoted before the specialist reviews the actual vehicle.</p>
+                    </div>
+                    <div class="analytics-card">
+                        <span class="analytics-title">// WHAT WE'RE SEEING</span>
+                        <p class="analytics-body">By the time the advisor called Kevin, he already understood that coverage was available for his vehicle, that there were different tiers, and that financing options existed. The call was a confirmation, not a cold start.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="phone-column" style="direction: ltr;">
+                <div class="scroll-indicator indicator-left">
+                    <span class="scroll-arrow">↑</span>
+                    <span class="scroll-line"></span>
+                    <span class="scroll-text">SCROLL CHAT</span>
+                    <span class="scroll-line"></span>
+                    <span class="scroll-arrow">↓</span>
+                </div>
+                <div class="hermes-iphone" style="transform: rotateY(10deg) rotateX(2deg);">
+                    <div class="hermes-status-bar"><span>10:12</span><span>📶🔋</span></div>
+                    <div class="hermes-header">
+                        <span class="hermes-back">&lt;</span>
+                        <div class="hermes-avatar">K</div>
+                        <div class="hermes-name-block">
+                            <span class="hermes-name">Kevin D.</span>
+                            <span class="hermes-sub">Tap to view info</span>
+                        </div>
+                        <div class="hermes-icons">⋮</div>
+                    </div>
+                    <div class="hermes-screen">
+                        <div class="date-chip">Mar 24, 2026</div>
+                        <div class="hermes-bubble customer"><span class="meta">09:54 AM</span>one more question before the call, roughly what kind of things does it cover</div>
+                        <div class="hermes-bubble agent"><span class="meta">09:55 AM</span>Generally speaking there are different tiers. Some plans focus on major components like engine and drivetrain and others are more comprehensive across the vehicle. It covers all makes and models so the CX-5 is definitely eligible</div>
+                        <div class="hermes-bubble customer"><span class="meta">10:02 AM</span>ok and is it something you can finance</div>
+                        <div class="hermes-bubble agent"><span class="meta">10:03 AM</span>Good question. There are financing options available so it doesn't all have to come out of pocket at once. The specialist will go over exact pricing and payment options with you on the call, I don't want to quote anything before they've had a chance to look at your specific vehicle</div>
+                        <div class="hermes-bubble customer"><span class="meta">10:08 AM</span>ok thats fair</div>
+                        <div class="hermes-bubble agent"><span class="meta">10:09 AM</span>And one other thing worth knowing, you don't need to bring the CX-5 in for any kind of inspection before the call. Nothing required on your end</div>
+                        <div class="hermes-bubble customer"><span class="meta">10:11 AM</span>oh thats actually really good to hear</div>
+                        <div class="hermes-bubble agent"><span class="meta">10:12 AM</span>Yeah makes it easy. Talk to you Thursday at 11:30 Kevin</div>
+                    </div>
+                    <div class="hermes-mobile-scroll-hint" onclick="this.parentNode.querySelector('.hermes-screen').scrollBy({top: 250, behavior: 'smooth'});">
+                        <span class="scroll-arrow" style="font-size:12px; margin-right:6px;">↑</span>
+                        <span>CLICK TO SCROLL CHAT</span>
+                        <span class="scroll-arrow" style="font-size:12px; margin-left:6px;">↓</span>
+                    </div>
+                    <div class="hermes-input-bar"><div class="plus">+</div><div class="text">iMessage</div></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==============================
+         CLOSE-OUT
+    ============================== -->
+    <section class="section-panel" id="section-dbr" style="justify-content: center; text-align: center;">
+        <div class="grid-bg"></div>
+        <div class="glow-orb" style="width: 800px; height: 800px; background: radial-gradient(circle, rgba(255,106,0,0.15) 0%, transparent 60%);"></div>
+
+        <div id="closing-wrap" style="z-index: 10; display: flex; flex-direction: column; align-items: center; max-width: 900px; width: 100%;">
+
+            <h1 style="font-size: 5rem; line-height: 1.1; letter-spacing: -2px; margin-bottom: 20px; font-weight: 800; text-transform: uppercase;">
+                THE DATABASE<br>IS <span style="color: var(--orange);">ALREADY THERE.</span>
+            </h1>
+
+            <p style="color: rgba(255,255,255,0.6); font-size: 1.25rem; margin-bottom: 50px; max-width: 640px; line-height: 1.6; font-weight: 300;">
+                Every past buyer in the dealer network is a warm lead. Revolt Technologies turns that list into appointments, trade-ins, and renewed warranty revenue. Automatically, over text, at scale.
+            </p>
+
+            <!-- COVERALL PROGRAM HIGHLIGHTS -->
+            <div id="closing-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; width: 100%; max-width: 860px; margin-bottom: 60px; text-align: left;">
+                <div style="background: rgba(255,106,0,0.04); border-top: 2px solid rgba(255,106,0,0.4); padding: 24px; border-radius: 6px;">
+                    <span style="font-family: 'Space Mono', monospace; color: var(--orange); font-size: 0.8rem; letter-spacing: 2px; display: block; margin-bottom: 10px;">// COVERAGE</span>
+                    <p style="color: rgba(255,255,255,0.8); font-size: 0.95rem; line-height: 1.6;">Extended warranty coverage for all makes, models, and types including gas, hybrid, EV, and diesel. Flexible tiers for every level of protection.</p>
+                </div>
+                <div style="background: rgba(255,106,0,0.04); border-top: 2px solid rgba(255,106,0,0.4); padding: 24px; border-radius: 6px;">
+                    <span style="font-family: 'Space Mono', monospace; color: var(--orange); font-size: 0.8rem; letter-spacing: 2px; display: block; margin-bottom: 10px;">// KM OPTIONS</span>
+                    <p style="color: rgba(255,255,255,0.8); font-size: 0.95rem; line-height: 1.6;">Up to unlimited term and kilometer options available, so every customer at any stage has a plan that works for their driving habits.</p>
+                </div>
+                <div style="background: rgba(255,106,0,0.04); border-top: 2px solid rgba(255,106,0,0.4); padding: 24px; border-radius: 6px;">
+                    <span style="font-family: 'Space Mono', monospace; color: var(--orange); font-size: 0.8rem; letter-spacing: 2px; display: block; margin-bottom: 10px;">// FINANCING</span>
+                    <p style="color: rgba(255,255,255,0.8); font-size: 0.95rem; line-height: 1.6;">0% interest financing available for up to 36 months. Coverage without the upfront commitment.</p>
+                </div>
+                <div style="background: rgba(255,106,0,0.04); border-top: 2px solid rgba(255,106,0,0.4); padding: 24px; border-radius: 6px;">
+                    <span style="font-family: 'Space Mono', monospace; color: var(--orange); font-size: 0.8rem; letter-spacing: 2px; display: block; margin-bottom: 10px;">// NO INSPECTION</span>
+                    <p style="color: rgba(255,255,255,0.8); font-size: 0.95rem; line-height: 1.6;">No inspection needed to qualify. Customers don't need to bring their vehicle in. Lower friction. Higher conversion.</p>
+                </div>
+            </div>
+
+            <div id="closing-ctas" style="display: flex; flex-direction: column; align-items: center; gap: 16px; width: 100%; max-width: 600px;">
+
+                <!-- PRIMARY: Demo CTA -->
+                <a href="https://portal.visquanta.com/#/vqonsole/agent-demo/351" target="_blank" style="
+                    display: inline-flex; align-items: center; justify-content: center; gap: 16px;
+                    width: 100%; padding: 24px 48px;
+                    background: var(--orange);
+                    border: none;
+                    color: #fff;
+                    font-family: 'Space Mono', monospace;
+                    font-size: 1.2rem; font-weight: 700; letter-spacing: 3px;
+                    text-decoration: none; border-radius: 4px;
+                    box-shadow: 0 0 40px rgba(255,106,0,0.35);
+                    transition: all 0.3s ease;
+                    text-transform: uppercase;
+                " onmouseover="this.style.background='#ff8533'; this.style.boxShadow='0 0 60px rgba(255,106,0,0.55)'; this.style.transform='translateY(-2px)';" onmouseout="this.style.background='var(--orange)'; this.style.boxShadow='0 0 40px rgba(255,106,0,0.35)'; this.style.transform='translateY(0)';">
+                    DEMO YOURSELF <span style="font-size: 1.5rem; line-height: 1;">→</span>
+                </a>
+
+                <!-- SECONDARY: Coverall + VisQuanta -->
+                <div style="display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; width: 100%;">
+                    <a href="https://www.caprogram.ca" target="_blank" style="
+                        flex: 1; min-width: 180px;
+                        display: inline-flex; align-items: center; justify-content: center; gap: 12px;
+                        padding: 18px 30px;
+                        background: rgba(255,106,0,0.08);
+                        border: 1px solid rgba(255,106,0,0.35);
+                        color: var(--orange);
+                        font-family: 'Space Mono', monospace;
+                        font-size: 0.9rem; font-weight: 700; letter-spacing: 2px;
+                        text-decoration: none; border-radius: 4px;
+                        transition: all 0.3s ease;
+                    " onmouseover="this.style.background='rgba(255,106,0,0.18)'; this.style.boxShadow='0 0 20px rgba(255,106,0,0.15)';" onmouseout="this.style.background='rgba(255,106,0,0.08)'; this.style.boxShadow='none';">
+                        LEARN COVERALL <span style="font-size: 1.2rem; line-height: 1;">→</span>
+                    </a>
+                    <a href="https://visquanta.com" target="_blank" style="
+                        flex: 1; min-width: 180px;
+                        display: inline-flex; align-items: center; justify-content: center; gap: 12px;
+                        padding: 18px 30px;
+                        background: transparent;
+                        border: 1px solid rgba(255,255,255,0.15);
+                        color: rgba(255,255,255,0.5);
+                        font-family: 'Space Mono', monospace;
+                        font-size: 0.9rem; font-weight: 700; letter-spacing: 2px;
+                        text-decoration: none; border-radius: 4px;
+                        transition: all 0.3s ease;
+                    " onmouseover="this.style.borderColor='rgba(255,106,0,0.3)'; this.style.color='rgba(255,255,255,0.8)';" onmouseout="this.style.borderColor='rgba(255,255,255,0.15)'; this.style.color='rgba(255,255,255,0.5)';">
+                        DEPLOY VISQUANTA <span style="font-size: 1.2rem; line-height: 1;">→</span>
+                    </a>
+                </div>
+
+            </div>
+
+            <div style="margin-top: 80px; display: flex; align-items: center; gap: 30px; opacity: 0.35;">
+                <img src="assets/CAP_logo_lt.svg" alt="Coverall" style="height: 63px;">
+                <span style="color: var(--orange); font-size: 1.2rem;">×</span>
+                <img src="assets/visquanta-logo.png" alt="VisQuanta" style="height: 45px;">
+            </div>
+        </div>
+    </section>
+
+</div>
+
+</body>
+</html>
